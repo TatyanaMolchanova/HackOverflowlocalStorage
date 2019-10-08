@@ -14,6 +14,7 @@
             comments: [
                 {
                     id: 1,
+                    points: 5,
                     content: 'Comment content'
                 }
             ]
@@ -27,11 +28,11 @@
             badges: ['js', 'javascript', 'api'],
             comments: [
                 {
-                    id: 1,
+                    id: 2,
                     content: 'Here is my code'
                 },
                 {
-                    id: 2,
+                    id: 3,
                     content: 'I am getting the "Success"'
                 }
             ]   
@@ -45,15 +46,15 @@
             badges: ['php', 'selenium', 'api'],
             comments: [
                 {
-                    id: 1,
+                    id: 4,
                     content: 'Here is my code'
                 },
                 {
-                    id: 2,
+                    id: 5,
                     content: 'I am getting the "Success"-'
                 },
                 {
-                    id: 3,
+                    id: 6,
                     content: 'I am getting'
                 }
             ]   
@@ -67,7 +68,7 @@
             badges: ['token', 'promise'],
             comments: [
                 {
-                    id: 1,
+                    id: 7,
                     content: 'My code is following.'
                 },
             ]   
@@ -86,12 +87,52 @@
     }
 
     load()
+    save()
 
     const Database = {}
 
     Database.getProblems = function getProblems() {
         return JSON.parse(JSON.stringify(database.problems))
     }
+
+    Database.getProblemById = function getProblemById(problemId) {
+        for (const problem of database.problems) {
+            if (problem.id === problemId) {
+                return JSON.parse(JSON.stringify(problem))
+            }
+        }
+        return null
+    }
+
+    Database.commentPointPlus = function commentPointPlus(commentId) {
+        for (const problem of database.problems) {
+            for (const comment of problem.comments) {
+                if (comment.id === commentId) {
+                    comment.points++
+                    save()
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+
+    Database.commentPointMinus = function commentPointMinus(commentId) {
+        for (const problem of database.problems) {
+            for (const comment of problem.comments) {
+                if (comment.id === commentId) {
+                    comment.points--
+                    save()
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+
+
 
     Database.addProblem = function addProblem(title, content) {
         database.problems.push({

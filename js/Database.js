@@ -3,7 +3,8 @@
 
 
     let database = {
-        idCounter: 2,
+        idProblemCounter: 2,
+        idCommentCounter: 2,
         problems: [{       
             id: 1,
             title: 'Post title',
@@ -134,19 +135,47 @@
 
 
 
-    Database.addProblem = function addProblem(title, content) {
-        database.problems.push({
-            id: database.idCounter,
+    Database.addProblem = function addProblem(title, content, badges = []) {
+        const problem = {
+            id: database.idProblemCounter,
             title: title,
             content: content,
             points: 0,
+            badges: badges,
+            viewsNumber: 0,
             comments: []
-        })
+        }
 
-        database.idCounter++
+        database.problems.push(problem)
+
+        database.idProblemCounter++
         
         save()
+
+        return problem.id // it means that problem (question) was add
     }
+
+    Database.addComment = function addComment(problemId, commentContent) {
+        for (const problem of database.problems) {
+            if (problem.id === problemId) {
+                const comment = {
+                    id: database.idCommentCounter,
+                    content: commentContent,
+                    points: 0
+                }
+
+                database.idCommentCounter++
+
+                problem.comments.push(comment)
+                save()
+                return true
+            }
+        }
+        return false
+    }
+
+
+
     // console.log(Database.addProblem);
     window.Database = Database
 
@@ -172,3 +201,6 @@
 // data[0].title = 'new title'
 // 48:33
 // Database.addProblem('How close Tab', 'How close Google TABS') - create new problem, in console too
+
+
+// 53-19 https://www.youtube.com/watch?v=1Ag6qUCf0t8

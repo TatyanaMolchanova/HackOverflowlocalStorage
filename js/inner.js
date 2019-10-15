@@ -21,7 +21,7 @@ document.querySelector('[data-bagesplace]').append(
 document.querySelector('[data-commentsnumberplace]').textContent = problem.comments.length
 
 document.querySelector('[data-commentsplace]').append(
-    ...problem.comments.map(comment => {
+    ...problem.comments.sort((a,b) => b.points - a.points).map(comment => {
         const commentHTML = CommentView.getCommentHTML(comment)
 
         commentHTML
@@ -58,6 +58,33 @@ document.querySelector('[data-commentsplace]').append(
         return commentHTML
     })
 )
+
+document
+    .querySelector('[data-addcommentbutton]')
+    .addEventListener('click', function(event){
+        event.preventDefault()
+        // console.log('fired');
+        const commentContent = document.querySelector('[data-commentplace]').value
+        // console.log(commentContent)
+
+        const result = Database.addComment(problemId, commentContent)
+        // console.log(result)
+        
+        if (result) {
+            location.reload()
+        }
+})
+
+
+
+
+
+
+
+
+
+
+
 
 // 41-30  https://www.youtube.com/watch?v=1Ag6qUCf0t8
 
